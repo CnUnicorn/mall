@@ -13,3 +13,7 @@ mybatis:
 #logging:
 #  pattern:
 #    console: "[%thread] %-5level %logger{36} - %msg%n"
+server:
+  servlet:
+    session:
+      timeout: 1200 # 单位是秒，session失效时间设置成20分钟

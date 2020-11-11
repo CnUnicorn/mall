@@ -2,7 +2,7 @@ package com.maowei.mall.form;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserForm {
+public class UserRegisterForm {
 
 
 //    @NotEmpty // 不能为null，长度必须大于0，一般用于判断集合是否为空

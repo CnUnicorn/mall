@@ -51,4 +51,24 @@ public class UserServiceImpl implements IUserService {
 
         return ResponseVo.success();
     }
+
+    @Override
+    public ResponseVo<User> login(String username, String password) {
+        User user = userMapper.selectByUsername(username); // 根据用户名查找数据库中的用户信息
+        // 考虑安全性，统一返回用户名或密码错误，让用户无法知道数据库是否有某个用户
+        if (user == null) {
+            // 用户不存在
+            return ResponseVo.error(ResponseEnum.USERNAME_OR_PASSWORD_ERROR);
+
+        }
+        // 比较输入密码和数据库中的密码是否相同
+        if (!user.getPassword().equalsIgnoreCase(
+                DigestUtils.md5DigestAsHex(password.getBytes(Charset.forName("utf-8"))))){
+            // 密码错误
+            return ResponseVo.error(ResponseEnum.USERNAME_OR_PASSWORD_ERROR);
+        }
+
+        user.setPassword(""); // 返回的时候密码设置为空
+        return ResponseVo.success(user);
+    }
 }
