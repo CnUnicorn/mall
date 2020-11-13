@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -46,6 +47,29 @@ public class CategoryServiceImpl implements ICategoryService {
 //                .map(e -> category2CategoryVo(e))
 //                .collect(Collectors.toList());
 
+    }
+
+    /**
+     * 通过传入的CategoryId查找它的所有次级目录的CategoryId
+     * @param id 传入CategoryId
+     * @param resultSet 存放某个CategoryId的所有次级目录的CategoryId，
+     *                  使用Set是因为Set中的值一定不会重复
+     */
+    @Override
+    public void findSubCategoryId(Integer id, Set<Integer> resultSet) {
+        List<Category> categories = categoryMapper.selectAll();
+        findSubCategoryId(id, resultSet, categories); // 重载方法，让查询数据库的方法只调用一次
+                                                      // 否则每一次递归都要重新查一次数据库，很浪费时间
+    }
+
+    private void findSubCategoryId(Integer id, Set<Integer> resultSet, List<Category> categories) {
+        for (Category category : categories) {
+            if (category.getParentId().equals(id)) {
+                resultSet.add(category.getId());
+                // 继续查找所有次级目录的CategoryId
+                findSubCategoryId(category.getId(), resultSet, categories);
+            }
+        }
     }
 
     /**
