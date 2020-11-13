@@ -1,24 +1,17 @@
-package com.maowei.mall.pojo;
+package com.maowei.mall.vo;
 
-import java.util.Date;
+import java.util.List;
 
-/**
- * 商品类目表，存放商品的种类名称，不会特别大（1000条意味着公司里有100种商品）
- */
-public class Category {
+public class CategoryVo {
     private Integer id;
 
     private Integer parentId;
 
     private String name;
 
-    private Boolean status;
-
     private Integer sortOrder;
 
-    private Date createTime;
-
-    private Date updateTime;
+    private List<CategoryVo> subCategories;
 
     public Integer getId() {
         return id;
@@ -44,14 +37,6 @@ public class Category {
         this.name = name;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     public Integer getSortOrder() {
         return sortOrder;
     }
@@ -60,32 +45,22 @@ public class Category {
         this.sortOrder = sortOrder;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public List<CategoryVo> getSubCategories() {
+        return subCategories;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setSubCategories(List<CategoryVo> subCategories) {
+        this.subCategories = subCategories;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "CategoryVo{" +
                 "id=" + id +
                 ", parentId=" + parentId +
                 ", name='" + name + '\'' +
-                ", status=" + status +
                 ", sortOrder=" + sortOrder +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
+                ", subCategories=" + subCategories +
                 '}';
     }
 }

@@ -1,20 +1,25 @@
 package com.maowei.mall.dao;
 
-
 import com.maowei.mall.pojo.Category;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 
-@Mapper            // 标记这个接口是Mybatis映射接口
-@Repository        // 注册bean，创建CategoryMapper接口的实体类
+@Mapper
+@Repository
 public interface CategoryMapper {
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("SELECT * FROM mall_category WHERE id = #{id}")
-    Category findById(@Param("id") Integer id);
+    int insert(Category record);
 
-    Category queryById(Integer id);
+    int insertSelective(Category record);
 
+    Category selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);
+
+    List<Category> selectAll();
 }

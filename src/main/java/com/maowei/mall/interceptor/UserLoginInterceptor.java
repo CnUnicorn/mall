@@ -15,7 +15,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(UserLoginInterceptor.class);
 
     /**
-     *
+     * 对登录状态进行判断，如果用户未登录，抛出异常，捕获后向前端返回状态码和错误信息
      * @param request
      * @param response
      * @param handler

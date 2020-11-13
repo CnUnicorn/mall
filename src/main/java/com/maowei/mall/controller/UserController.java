@@ -78,7 +78,6 @@ public class UserController {
         return ResponseVo.success(user);
     }
 
-    // TODO 判断登录状态，拦截器
     @PostMapping("/user/logout")
     /**
      * {@link TomcatServletWebServerFactory} getSessionTimeoutInMinutes方法限制了最短失效时间为1分钟

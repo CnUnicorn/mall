@@ -1,5 +1,6 @@
 package com.maowei.mall.service.impl;
 
+import com.maowei.mall.dao.CategoryMapper;
 import com.maowei.mall.dao.UserMapper;
 import com.maowei.mall.enums.ResponseEnum;
 import com.maowei.mall.enums.RoleEnum;
@@ -16,7 +17,10 @@ import java.nio.charset.Charset;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    private UserMapper userMapper;  // 查询当前数据库中的用户
+    private UserMapper userMapper;  // mall_user表的Mapper接口
+
+    @Autowired
+    private CategoryMapper categoryMapper; // mall_category表的Mapper接口
 
     /**
      * 注册
@@ -71,4 +75,5 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(""); // 返回的时候密码设置为空
         return ResponseVo.success(user);
     }
+
 }
