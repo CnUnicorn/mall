@@ -12,7 +12,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 注册拦截器
         registry.addInterceptor(new UserLoginInterceptor())
                 .addPathPatterns("/**") // 默认拦截所有url
-                .excludePathPatterns("/error", "/carts", "/user/register", "/user/login", "/categories", "/products/*");
+                .excludePathPatterns("/error", "/user/register", "/user/login", "/categories", "/products/*");
         // 配置拦截器，需要拦截的url放在addPathPatterns中（由于这里需要拦截大多数url，所以
         // 设置成拦截所有url），不需要拦截的url放在excludePathPatterns中。
         // 如果不需要拦截的url太多了，可以单独写一个配置类，通过配置文件注入url

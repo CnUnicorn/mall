@@ -25,5 +25,6 @@ public interface ProductMapper {
 
     int updateByPrimaryKey(Product record);
 
+    List<Product> selectByProductIdSet(@Param("productIdSet") Set<String> productIdSet);
 
 }

@@ -4,6 +4,10 @@ spring:
     username: root
     password: 3.1415926
     url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+  redis:
+    host: 10.112.3.100 # redis所在的主机IP地址
+    port: 6379
+#    password: 如果redis设置了密码，这里还需要配置密码
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

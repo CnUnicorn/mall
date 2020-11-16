@@ -81,4 +81,13 @@ public class ResponseVo<T> {
         return new ResponseVo<>(responseEnum.getCode(),
                 Objects.requireNonNull(bindingResult.getFieldError()).getField() + " " + bindingResult.getFieldError().getDefaultMessage());
     }
+
+    @Override
+    public String toString() {
+        return "ResponseVo{" +
+                "status=" + status +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

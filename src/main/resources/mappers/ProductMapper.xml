@@ -37,6 +37,18 @@
       </foreach>
     </if>
   </select>
+  <select id="selectByProductIdSet" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mall_product
+    where status = 1
+    <if test="productIdSet.size() > 0"> <!-- 只有在productIdSet元素个数大于0的时候才拼接 -->
+      and id in
+      <foreach collection="productIdSet" index="index" item="item" separator="," open="(" close=")">
+        #{item}
+      </foreach>
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_product
     where id = #{id,jdbcType=INTEGER}
