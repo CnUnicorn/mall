@@ -91,7 +91,7 @@ public class CartServiceImpl implements ICartService {
 //        boolean selectAll = true;
 //        BigDecimal totalPrice = BigDecimal.ZERO;
 //        List<CartProductVo> cartVoList = new ArrayList<>();
-//        // TODO 需要优化，不要在for循环里查询sql，使用mysql里的in
+//
 //        for (Map.Entry<String, String> entry : entries.entrySet()) {
 //            int productId = Integer.parseInt(entry.getKey());
 //            Cart cart = gson.fromJson(entry.getValue(), Cart.class);
