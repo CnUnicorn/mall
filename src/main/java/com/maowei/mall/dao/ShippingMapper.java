@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 @Repository
@@ -21,7 +22,12 @@ public interface ShippingMapper {
 
     Shipping selectByPrimaryKey(Integer id);
 
+    Shipping selectByIdAndUid(@Param("shippingId") Integer shippingId,
+                              @Param("uid") Integer uid);
+
     List<Shipping> selectByUid(Integer uid);
+
+    List<Shipping> selectByShippingIdSet(@Param("shippingIdSet") Set<Integer> shippingIdSet);
 
     int updateByPrimaryKeySelective(Shipping record);
 

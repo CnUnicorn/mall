@@ -2,8 +2,11 @@ package com.maowei.mall.service;
 
 import com.maowei.mall.form.CartAddForm;
 import com.maowei.mall.form.CartUpdateForm;
+import com.maowei.mall.pojo.Cart;
 import com.maowei.mall.vo.CartVo;
 import com.maowei.mall.vo.ResponseVo;
+
+import java.util.List;
 
 public interface ICartService {
 
@@ -26,5 +29,7 @@ public interface ICartService {
     ResponseVo<CartVo> unSelectAll(Integer uid);
 
     ResponseVo<Integer> sum(Integer uid);
+
+    List<Cart> listForCart(Integer uid);
 
 }

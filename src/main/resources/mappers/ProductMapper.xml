@@ -41,13 +41,14 @@
     select
     <include refid="Base_Column_List" />
     from mall_product
-    where status = 1
+    <where>
     <if test="productIdSet.size() > 0"> <!-- 只有在productIdSet元素个数大于0的时候才拼接 -->
-      and id in
+      id in
       <foreach collection="productIdSet" index="index" item="item" separator="," open="(" close=")">
         #{item}
       </foreach>
     </if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mall_product
