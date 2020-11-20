@@ -161,9 +161,74 @@ public class OrderServiceImpl implements IOrderService {
         return ResponseVo.success(pageInfo);
     }
 
+    /**
+     * 查找某个订单的详情
+     * @param uid
+     * @param orderNo
+     * @return
+     */
     @Override
     public ResponseVo<OrderVo> detail(Integer uid, Long orderNo) {
-        return null;
+        // 先校验订单是否属于该用户
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order == null || !order.getUserId().equals(uid)) {
+            return ResponseVo.error(ResponseEnum.ORDER_NOT_EXIST);
+        }
+
+        Set<Long> orderNoSet = new HashSet<>();
+        orderNoSet.add(orderNo);
+        List<OrderItem> orderItemList = orderItemMapper.selectByOrderNoSet(orderNoSet);
+
+        Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
+
+        OrderVo orderVo = buildOrderVo(order, orderItemList, shipping);
+
+        return ResponseVo.success(orderVo);
+    }
+
+    @Override
+    public ResponseVo cancel(Integer uid, Long orderNo) {
+        // 校验订单是否属于该用户
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order == null || !order.getUserId().equals(uid)) {
+            return ResponseVo.error(ResponseEnum.ORDER_NOT_EXIST);
+        }
+
+        // 设定只有在订单状态是未付款的时候才可以取消订单（只考虑了简单的情况），实际上付款后也可以取消，只不过需要退款
+        if (!order.getStatus().equals(OrderStatusEnum.NOT_PAY.getCode())) {
+            return ResponseVo.error(ResponseEnum.ORDER_STATUS_ERROR);
+        }
+        // 如果是未支付状态，将订单状态设置成已取消，类似软删除，数据还在
+        order.setStatus(OrderStatusEnum.CANCELED.getCode());
+        order.setCloseTime(new Date()); // 关闭时间设置成当前时间
+        int row = orderMapper.updateByPrimaryKeySelective(order);
+        if (row <= 0) {
+            // 数据库更新未成功
+            return ResponseVo.error(ResponseEnum.ERROR);
+        }
+
+        return ResponseVo.success();
+    }
+
+    @Override
+    public void paid(Long orderNo) {
+        // 校验订单是否属于该用户
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order == null) {
+            throw new RuntimeException(ResponseEnum.ORDER_NOT_EXIST.getDesc() + " 订单id：" + orderNo);
+        }
+
+        // 设定只有在“未付款”状态，才能改变成已付款状态
+        if (!order.getStatus().equals(OrderStatusEnum.NOT_PAY.getCode())) {
+            throw new RuntimeException(ResponseEnum.ORDER_STATUS_ERROR.getDesc() + " 订单id：" + orderNo);
+        }
+        order.setStatus(OrderStatusEnum.PAID.getCode());
+        order.setPaymentTime(new Date()); // 付款时间设置成当前时间
+        int row = orderMapper.updateByPrimaryKeySelective(order);
+        if (row <= 0) {
+            // 数据库更新未成功
+            throw new RuntimeException("将订单更新为已支付状态失败，订单id：" + orderNo);
+        }
     }
 
     private OrderVo buildOrderVo(Order order, List<OrderItem> orderItemList, Shipping shipping) {
@@ -176,8 +241,10 @@ public class OrderServiceImpl implements IOrderService {
         OrderVo orderVo = new OrderVo();
         BeanUtils.copyProperties(order, orderVo);
         orderVo.setOrderItemVoList(orderItemVoList);
-        orderVo.setShippingId(shipping.getId());
-        orderVo.setShippingVo(shipping);
+        if (shipping.getId() != null) {
+            orderVo.setShippingId(shipping.getId());
+            orderVo.setShippingVo(shipping);
+        }
 
         return orderVo;
     }

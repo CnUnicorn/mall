@@ -16,7 +16,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class OrderServiceImplTest extends MallApplicationTests {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImplTest.class);
@@ -54,6 +56,22 @@ public class OrderServiceImplTest extends MallApplicationTests {
     @Test
     public void list() {
         ResponseVo<PageInfo> responseVo = orderService.list(uid, 1, 2);
+        logger.info("responseVo={}", gson.toJson(responseVo));
+        Assert.assertEquals(ResponseEnum.SUCCESS.getCode(), responseVo.getStatus());
+    }
+
+    @Test
+    public void detail() {
+        Long orderNo = 1605681426562L;
+        ResponseVo<OrderVo> responseVo = orderService.detail(uid, orderNo);
+        logger.info("responseVo={}", gson.toJson(responseVo));
+        Assert.assertEquals(ResponseEnum.SUCCESS.getCode(), responseVo.getStatus());
+    }
+
+    @Test
+    public void cancel() {
+        Long orderNo = 1605681426562L;
+        ResponseVo responseVo = orderService.cancel(uid, orderNo);
         logger.info("responseVo={}", gson.toJson(responseVo));
         Assert.assertEquals(ResponseEnum.SUCCESS.getCode(), responseVo.getStatus());
     }
